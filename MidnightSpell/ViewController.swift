@@ -9,12 +9,13 @@ import UIKit
 
 class ViewController: UIViewController {
 
+  @IBOutlet weak var countdownLabel: UILabel!
+
   var timer: Timer!
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.view.backgroundColor = .yellow
-
+    
     timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(runCountdown), userInfo: nil, repeats: true)
   }
 
@@ -29,15 +30,8 @@ class ViewController: UIViewController {
     let tomorrowMidnight = userCalendar.startOfDay(for: tomorrow)
 
     let timeLeft = userCalendar.dateComponents([.hour, .minute, .second], from: now, to: tomorrowMidnight)
-
-    print("hour:\(timeLeft.hour)) | min:\(timeLeft.minute) | sec: \(timeLeft.second)")
     RunLoop.current.add(timer, forMode: .common) // This for firing timer even there's UI interaction.
 
-    let hours = timeLeft.hour!
-    let minutes = timeLeft.minute!
-    let seconds = timeLeft.second!
-
-    let timeLeftString = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    print("timeLeftString", timeLeftString)
+    countdownLabel.text = String(format: "%02d : %02d : %02d", timeLeft.hour!, timeLeft.minute!, timeLeft.second!)
   }
 }
